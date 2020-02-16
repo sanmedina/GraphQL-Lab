@@ -5,12 +5,12 @@ import { Resolver, Query, Arg, FieldResolver, Root } from 'type-graphql';
 export default class BookResolver {
     @FieldResolver(type => Author)
     async author(@Root() book: Book): Promise<Author | null> {
-        return await Author.findOne({ where: { id: book.authorId } });
+        return await book.$get('author');
     }
 
     @Query(returns => Book)
     async book(@Arg('id') id: number) {
-        return await Book.findOne({ where: { id: id } });
+        return await Book.findByPk(id);
     }
 
     @Query(returns => [Book])
