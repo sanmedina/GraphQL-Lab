@@ -1,5 +1,6 @@
-import { Resolver, FieldResolver, Root, Query, Arg } from 'type-graphql';
+import { Resolver, FieldResolver, Root, Query, Arg, Mutation } from 'type-graphql';
 import { Book, Author } from '../models';
+import { AddAuthorInput } from './author.input';
 
 @Resolver(of => Author)
 export default class AuthorResolver {
@@ -16,5 +17,10 @@ export default class AuthorResolver {
     @Query(returns => [Author])
     async authors() {
         return await Author.findAll();
+    }
+
+    @Mutation(type => Author)
+    async addAuthor(@Arg('data') newAuthorData: AddAuthorInput): Promise<Author> {
+        return await Author.create(newAuthorData);
     }
 }
