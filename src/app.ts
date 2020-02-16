@@ -1,10 +1,16 @@
 import express from 'express';
 import sequilize from './db';
 import { Author, Book } from './models';
+import graphqlHttp from 'express-graphql';
+import schema from './graphql';
 
 sequilize.sync();
 const app = express();
 app.use(express.json());
+app.use('/graphql', graphqlHttp({
+    schema,
+    graphiql: true
+}));
 
 app.get('/', (req, res) => {
     res.status(200).send({ hello: 'world' });
