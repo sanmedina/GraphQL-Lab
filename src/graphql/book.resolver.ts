@@ -1,6 +1,8 @@
 import { Book, Author } from '../models';
 import { Resolver, Query, Arg, FieldResolver, Root, Mutation, Int } from 'type-graphql';
 import { AddBookInput, UpdateBookInput } from './book.input';
+import PaginationInput from './pagination.input';
+import { FindOptions, Op } from 'sequelize';
 
 @Resolver(of => Book)
 export default class BookResolver {
@@ -15,8 +17,19 @@ export default class BookResolver {
     }
 
     @Query(returns => [Book])
-    async books() {
-        return await Book.findAll();
+    async books(@Arg('pagination') pagination: PaginationInput) {
+        let qry: FindOptions = {
+            limit: pagination.pageSize,
+            offset: (pagination.page - 1) * pagination.pageSize
+        };
+        if (pagination.keyword) {
+            qry.where = {
+                name: {
+                    [Op.like]: `%${pagination.keyword}%`
+                }
+            }
+        }
+        return await Book.findAll(qry);
     }
 
     @Mutation(type => Book)
