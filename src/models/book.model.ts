@@ -1,4 +1,4 @@
-import { Table, Model, Column, PrimaryKey, DataType, AllowNull, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import { Table, Model, Column, PrimaryKey, DataType, AllowNull, ForeignKey, BelongsTo, AutoIncrement } from 'sequelize-typescript';
 import { ObjectType, Field, ID, Int } from 'type-graphql';
 import Author from './author.model';
 
@@ -9,6 +9,7 @@ import Author from './author.model';
 @ObjectType()
 export default class Book extends Model<Book> {
     @PrimaryKey
+    @AutoIncrement
     @Column({
         type: DataType.INTEGER
     })
