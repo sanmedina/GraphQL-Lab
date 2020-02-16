@@ -10,6 +10,16 @@ class AddAuthorInput implements Partial<Author> {
     public age!: number;
 }
 
+@InputType()
+class UpdateAuthorInput implements Partial<Author> {
+    @Field({ nullable: true })
+    public name?: string;
+
+    @Field({ nullable: true })
+    public age?: number;
+}
+
 export {
-    AddAuthorInput
+    AddAuthorInput,
+    UpdateAuthorInput,
 }
