@@ -37,4 +37,13 @@ export default class AuthorResolver {
         await author.save();
         return author;
     }
+
+    @Mutation(type => Boolean)
+    async deleteAuthor(@Arg('id', type => Int) id: number): Promise<boolean> {
+        const result = await Author.destroy({ where: { id: id }});
+        if (result === 0) {
+            throw new Error('Author with given ID does not exists');
+        }
+        return true;
+    }
 }
