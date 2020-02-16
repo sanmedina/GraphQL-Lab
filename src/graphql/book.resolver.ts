@@ -1,6 +1,6 @@
 import { Book, Author } from '../models';
-import { Resolver, Query, Arg, FieldResolver, Root, Mutation } from 'type-graphql';
-import { AddBookInput } from './book.input';
+import { Resolver, Query, Arg, FieldResolver, Root, Mutation, Int } from 'type-graphql';
+import { AddBookInput, UpdateBookInput } from './book.input';
 
 @Resolver(of => Book)
 export default class BookResolver {
@@ -22,5 +22,19 @@ export default class BookResolver {
     @Mutation(type => Book)
     async addBook(@Arg('data') newBookData: AddBookInput) {
         return await Book.create(newBookData);
+    }
+
+    @Mutation(type => Book)
+    async updateBook(
+        @Arg('id', type => Int) id: number,
+        @Arg('data') bookData: UpdateBookInput
+    ) {
+        const book = await Book.findByPk(id);
+        if (!book) {
+            throw new Error('Book with given ID does not exists');
+        }
+        book.setAttributes(bookData);
+        await book.save();
+        return book;
     }
 }

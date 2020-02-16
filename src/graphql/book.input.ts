@@ -13,6 +13,16 @@ class AddBookInput implements Partial<Book> {
     public authorId!: number;
 }
 
+@InputType()
+class UpdateBookInput implements Partial<Book> {
+    @Field({ nullable: true })
+    public name?: string;
+
+    @Field({ nullable: true })
+    public genre?: string;
+}
+
 export {
-    AddBookInput
+    AddBookInput,
+    UpdateBookInput,
 }
