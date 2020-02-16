@@ -5,12 +5,12 @@ import { Book, Author } from '../models';
 export default class AuthorResolver {
     @FieldResolver(type => [Book])
     async books(@Root() author: Author): Promise<Book[]> {
-        return await Book.findAll({ where: { authorId: author.id } });
+        return await author.$get('books');
     }
 
     @Query(returns => Author)
     async author(@Arg('id') id: number) {
-        return await Author.findOne({ where: { id: id }});
+        return await Author.findByPk(id);
     }
 
     @Query(returns => [Author])

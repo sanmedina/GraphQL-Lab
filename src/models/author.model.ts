@@ -1,5 +1,6 @@
-import { Table, Model, Column, PrimaryKey, DataType, AllowNull } from 'sequelize-typescript';
+import { Table, Model, Column, PrimaryKey, DataType, AllowNull, HasMany } from 'sequelize-typescript';
 import { ObjectType, Field, ID, Int } from 'type-graphql';
+import Book from './book.model';
 
 @Table({
     tableName: 'author',
@@ -27,4 +28,7 @@ export default class Author extends Model<Author> {
     })
     @Field(type => Int, { nullable: false })
     public age!: number;
+
+    @HasMany(() => Book)
+    public readonly books?: Book[];
 }
