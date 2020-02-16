@@ -37,4 +37,13 @@ export default class BookResolver {
         await book.save();
         return book;
     }
+
+    @Mutation(type => Boolean)
+    async deleteBook(@Arg('id', type => Int) id: number): Promise<boolean> {
+        const result = await Book.destroy({ where: { id } });
+        if (result === 0) {
+            throw new Error('Book with given ID does not exists');
+        }
+        return true;
+    }
 }
